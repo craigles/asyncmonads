@@ -9,8 +9,13 @@ namespace AsyncMonads.Controllers
     public class ReservationController : ControllerBase
     {
         private readonly IReservationRepository _reservationRepository = new ReservationRepository();
-        private MaîtreD _maîtreD = new MaîtreD(20);
+        private readonly MaîtreD _maîtreD = new MaîtreD(20);
 
+        /// <summary>
+        /// https://youtu.be/F9bznonKc64?t=3114
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/reservation/post")]
         public async Task<IActionResult> Post(Reservation reservation)
@@ -21,11 +26,16 @@ namespace AsyncMonads.Controllers
 
             return await m
                 .Select(async r => await _reservationRepository.Create(r))
-                .Match(
+                .Match<Task<IActionResult>>(
                     nothing: Task.FromResult(this.InternalServerError("Could not create reservation")),
                     just: async id => Ok(await id));
         }
 
+        /// <summary>
+        /// https://youtu.be/F9bznonKc64?t=3356
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/reservation/PostWithTaskExtensions")]
         public async Task<IActionResult> PostWithTaskExtensions(Reservation reservation)

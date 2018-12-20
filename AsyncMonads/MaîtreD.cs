@@ -1,12 +1,10 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using AsyncMonads.Models;
 
 namespace AsyncMonads
 {
     public class MaîtreD
     {
-
         private readonly int _capacity;
 
         public MaîtreD(int capacity)

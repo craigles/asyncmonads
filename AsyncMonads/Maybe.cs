@@ -31,17 +31,6 @@ namespace AsyncMonads
             return new Maybe<TResult>();
         }
 
-        public async Task<TResult> Traverse<TResult>(Func<T, Task<TResult>> selector) where TResult : new()
-        {
-            if (selector == null)
-                throw new ArgumentNullException(nameof(selector));
-
-            if (_hasItem)
-                return await selector(_item);
-
-            return new TResult();
-        }
-
         public Maybe<TResult> SelectMany<TResult>(Func<T, Maybe<TResult>> selector)
         {
             if (selector == null)
@@ -53,17 +42,18 @@ namespace AsyncMonads
             return new Maybe<TResult>();
         }
 
-        public TResult Match<TResult>(TResult nothing, Func<T, TResult> just)
+        public async Task<Maybe<TResult>> Traverse<TResult>(Func<T, Task<TResult>> selector)
         {
-            if (nothing == null)
-                throw new ArgumentNullException(nameof(nothing));
-            if (just == null)
-                throw new ArgumentNullException(nameof(just));
+            if (selector == null)
+                throw new ArgumentNullException(nameof(selector));
 
-            return _hasItem ? just(_item) : nothing;
+            if (_hasItem)
+                return new Maybe<TResult>(await selector(_item));
+
+            return new Maybe<TResult>();
         }
 
-        public TResult Match<TResult>(TResult nothing, Func<Task<T>, TResult> just)
+        public TResult Match<TResult>(TResult nothing, Func<T, TResult> just)
         {
             if (nothing == null)
                 throw new ArgumentNullException(nameof(nothing));
