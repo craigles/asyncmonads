@@ -10,6 +10,7 @@ namespace AsyncMonads
     {
         Task<Reservation[]> ReadReservations(DateTime date);
         Task<int> Create(Reservation reservation);
+        Task<int> Capacity();
     }
 
     public class ReservationRepository : IReservationRepository
@@ -43,6 +44,11 @@ namespace AsyncMonads
         public async Task<int> Create(Reservation reservation)
         {
             return await Task.FromResult(_reservationNumber++);
+        }
+
+        public async Task<int> Capacity()
+        {
+            return await Task.FromResult(20);
         }
     }
 }

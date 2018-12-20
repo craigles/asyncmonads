@@ -9,7 +9,12 @@ namespace AsyncMonads.Controllers
     public class ReservationController : ControllerBase
     {
         private readonly IReservationRepository _reservationRepository = new ReservationRepository();
-        private readonly MaîtreD _maîtreD = new MaîtreD(20);
+        private readonly MaîtreD _maîtreD;
+
+        public ReservationController()
+        {
+            _maîtreD = new MaîtreD(_reservationRepository.Capacity().Result);
+        }
 
         /// <summary>
         /// https://youtu.be/F9bznonKc64?t=3114
@@ -43,7 +48,7 @@ namespace AsyncMonads.Controllers
             return await _reservationRepository.ReadReservations(reservation.Date)
                 .Select(rs => _maîtreD.TryAccept(rs, reservation))
                 .SelectMany(m => m.Traverse(r => _reservationRepository.Create(r)))
-                .Match(this.InternalServerError("Could not create reservation"), i => Ok(i));
+                .Match(this.InternalServerError("Could not create reservation"), id => Ok(id));
         }
     }
 }
