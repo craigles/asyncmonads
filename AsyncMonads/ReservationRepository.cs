@@ -7,7 +7,7 @@ namespace AsyncMonads
     public interface IReservationRepository
     {
         Task<Reservation[]> ReadReservations(DateTime date);
-        Task<int> Create(Reservation reservation);
+        Task<Maybe<int>> Create(Reservation reservation);
     }
 
     public class ReservationRepository : IReservationRepository
@@ -22,9 +22,9 @@ namespace AsyncMonads
             }});
         }
 
-        public async Task<int> Create(Reservation reservation)
+        public async Task<Maybe<int>> Create(Reservation reservation)
         {
-            return await Task.FromResult(1);
+            return await Task.FromResult(new Maybe<int>(1));
         }
     }
 }

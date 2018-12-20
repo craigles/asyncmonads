@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace AsyncMonads
+namespace AsyncMonads.Extensions
 {
     public static class ControllerExtensions
     {
