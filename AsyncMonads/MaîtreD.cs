@@ -3,6 +3,12 @@ using AsyncMonads.Models;
 
 namespace AsyncMonads
 {
+    /// <summary>
+    /// A more functional implementation of <see cref="MaîtreDObjectOriented"/>.
+    /// No dependencies or async. Using the <see cref="Maybe{T}"/> monad to cater for nulls.
+    ///
+    /// https://youtu.be/F9bznonKc64?t=3237
+    /// </summary>
     public class MaîtreD
     {
         private readonly int _capacity;

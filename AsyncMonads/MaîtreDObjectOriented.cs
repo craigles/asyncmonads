@@ -10,6 +10,8 @@ namespace AsyncMonads
     }
 
     /// <summary>
+    /// The typical object oriented way of creating a service with a dependency.
+    /// 
     /// https://youtu.be/F9bznonKc64?t=177
     /// </summary>
     public class MaîtreDObjectOriented : IMaîtreDObjectOriented
