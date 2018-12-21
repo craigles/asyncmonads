@@ -25,5 +25,12 @@ namespace AsyncMonads.Extensions
 
             return m.Match(nothing, just);
         }
+
+        public static async Task<Maybe<TResult>> Traverse<T, TResult>(this Maybe<T> maybe, Func<T, Task<TResult>> selector)
+        {
+            var maybeTResult = maybe.Select(selector);
+
+            return await maybeTResult.Match(Task.FromResult(new Maybe<TResult>()), async task => new Maybe<TResult>(await task));
+        }
     }
 }

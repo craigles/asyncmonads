@@ -17,32 +17,30 @@ namespace AsyncMonads
     {
         private static int _reservationNumber = 1;
 
-        public async Task<Reservation[]> ReadReservations(DateTime date)
-        {
-            return await Task.FromResult(Reservations().ToArray());
-        }
-
-        private static IEnumerable<Reservation> Reservations()
-        {
-            yield return new Reservation
+        private static readonly IList<Reservation> Reservations = new List<Reservation>{
+            new Reservation
             {
                 Date = DateTime.Now,
                 Name = "Someone",
                 Quantity = 2,
                 IsAccepted = true
-            };
-
-            yield return new Reservation
+            },
+            new Reservation
             {
                 Date = DateTime.Now,
                 Name = "Someone else",
                 Quantity = 4,
                 IsAccepted = true
-            };
+            }};
+
+        public async Task<Reservation[]> ReadReservations(DateTime date)
+        {
+            return await Task.FromResult(Reservations.ToArray());
         }
 
         public async Task<int> Create(Reservation reservation)
         {
+            Reservations.Add(reservation);
             return await Task.FromResult(_reservationNumber++);
         }
 

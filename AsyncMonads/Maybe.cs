@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace AsyncMonads
 {
@@ -33,21 +32,10 @@ namespace AsyncMonads
         public Maybe<TResult> SelectMany<TResult>(Func<T, Maybe<TResult>> selector)
         {
             if (selector == null)
-                throw new ArgumentNullException(nameof(selector));
+                throw new ArgumentNullException(nameof(selector)); 
 
             if (_hasItem)
                 return selector(_item);
-
-            return new Maybe<TResult>();
-        }
-
-        public async Task<Maybe<TResult>> Traverse<TResult>(Func<T, Task<TResult>> selector)
-        {
-            if (selector == null)
-                throw new ArgumentNullException(nameof(selector));
-
-            if (_hasItem)
-                return new Maybe<TResult>(await selector(_item));
 
             return new Maybe<TResult>();
         }
